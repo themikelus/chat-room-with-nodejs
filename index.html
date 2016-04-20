@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Chat room</title>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				var socket = io.connect('SET_HERE_YOUR_LISTENING_HTTP_SERVER');
+				
+				socket.on('connect', function(data) {
+					username = prompt('What is your username?');
+					socket.emit('join', username);
+					changeStatus();
+				});
+
+				socket.on('add chatter', function(username) {
+					addUser(username);
+				});
+
+				socket.on('message', function(message) {
+					addMessage(message);
+				});
+
+				$('#chat_form').submit(function(e) {
+					var message = $('#chat_input').val();
+					socket.emit('message', message);
+					$('#chat_input').val("");
+					return false;
+				});
+
+				function addMessage(message) {
+					$('#chat_output').append(message + "\n");
+				}
+
+				function addUser(username) {
+					$('#user_list').append($('<li>' + username + "</li>").data('username', username));
+				}
+
+				function changeStatus() {
+					$('#chat_status').css('color', 'green');
+				}
+			});
+		</script>
+		<link rel="stylesheet" type="text/css" href="main.css">
+	</head>
+	<body>
+		<div>
+			<p id="chat_status">connected</p>
+		</div>
+		<div class="justified">
+			<div id="chat_users">
+				<ul id="user_list"></ul>
+			</div>
+			<textarea id="chat_output" disabled></textarea>
+		</div>
+		<form id="chat_form">
+			<div class="justified">
+				<input id="chat_input" type="text" size="20px"></input>
+				<input type="submit" value="send" size="30px"></input>
+			</div>
+		</form>
+	</body>
+</html>

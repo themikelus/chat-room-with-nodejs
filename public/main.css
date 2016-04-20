@@ -1,0 +1,23 @@
+div {
+    display: flex;
+    justify-content: center;
+}
+#chat_status {
+	color: red;
+	font-size: 20px;
+}
+#chat_output {
+    width: 450px;
+    height: 230px;
+    min-height: 230px;
+    min-width: 450px;
+    max-height: 230px;
+    max-width: 450px;
+}
+#chat_users {
+    border-radius: 15px 50px;
+    padding: 20px;
+    width: 150px;
+	height: 195px;
+	background-color: rgb(161, 198, 210);
+} 
